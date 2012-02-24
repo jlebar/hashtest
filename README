@@ -1,3 +1,5 @@
 A project for testing the speed of various hash implementations.
 
+I hereby disavow all responsibility for the ugliness of the code here.
+
 See https://bugzilla.mozilla.org/show_bug.cgi?id=729952
