@@ -81,6 +81,23 @@ inline uint32_t hash(const string& line)
 }
 
 template<hash_name hashfn>
+inline uint32_t wrappedhash(const string& line)
+{
+  switch(line.length()) {
+  case 1:
+    return line[0];
+  case 2:
+    return line[0] << 8 | line[1];
+  case 3:
+    return line[0] << 16 | line[1] << 8 | line[2];
+  case 4:
+    return line[0] << 24 | line [1] << 16 | line[2] << 8 | line[3];
+  default:
+    return hash<hashfn>(line);
+  }
+}
+
+template<hash_name hashfn>
 void test(const vector<string>& lines, const char* testname)
 {
   printf("Testing %s\n", testname);
@@ -89,14 +106,14 @@ void test(const vector<string>& lines, const char* testname)
     AutoTimer timer;
     for (size_t i = 0; i < 1000; i++) {
       for (size_t j = 0; j < lines.size(); j++) {
-        hash<hashfn>(lines[i]);
+        wrappedhash<hashfn>(lines[i]);
       }
     }
   }
 
   map<uint32_t, uint32_t> hashes;
   for (size_t i = 0; i < lines.size(); i++) {
-    uint32_t h = hash<hashfn>(lines[i]);
+    uint32_t h = wrappedhash<hashfn>(lines[i]);
     hashes[h]++;
   }
 
